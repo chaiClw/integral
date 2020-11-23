@@ -284,13 +284,14 @@ class IntegralGoodsService
      * @param $goodsId
      * @param $memberInfo
      * @param $param
+     * @param $userType (借阅-1 到馆-2)
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @author chailiwei
      */
-    public function exchange($goodsId, $memberInfo, $param)
+    public function exchange($goodsId, $memberInfo, $param,$userType = 1)
     {
         $where = [
             'goods_status' => 1,
@@ -306,9 +307,15 @@ class IntegralGoodsService
             return ['status' => 0, 'msg' => '该商品太火爆了，已经被抢空了'];
         }
 
-        $memberIntegralData = $this->memberIntegralModel->where([
-            'entity_id' => $memberInfo['idmember']
-        ])->find();
+        if ($userType == 1){
+            $memberIntegralData = $this->memberIntegralModel->where([
+                'online_id' => $memberInfo['idmember']
+            ])->find();
+        } else {
+            $memberIntegralData = $this->memberIntegralModel->where([
+                'entity_id' => $memberInfo['idmember']
+            ])->find();
+        }
 
         //验证用户积分是否足够
         if ($memberIntegralData['integral'] < $integralGoodsData['integral']) {
