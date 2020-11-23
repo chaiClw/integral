@@ -605,10 +605,35 @@ class IntegralGoodsService
         ]);
     }
 
-    //兑换列表
-    public function logIndex($type)
+    /**
+     * 积分使用明细
+     * @param $memberId
+     * @param $param
+     * @param string $type
+     * @param int $userType
+     * @author chailiwei
+     */
+    public function logIndex($memberId, $param, $type = '', $userType = 1)
     {
+        $page_size = $param['page_size'] ?? 10;
 
+        if ($userType == 1) {
+            $memberIntegralData = $this->memberIntegralModel->where([
+                'online_id' => $memberId
+            ])->find();
+        } else {
+            $memberIntegralData = $this->memberIntegralModel->where([
+                'entity_id' => $memberId
+            ])->find();
+        }
+        $where = [];
+        $where['integral_id'] = $memberIntegralData['id'];
+        if (!empty($type)) {
+            $where['type'] = $type;
+        }
+        return $this->memberIntegralLogModel
+            ->where($where)
+            ->paginate($page_size, false);
     }
 
 
