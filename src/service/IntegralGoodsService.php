@@ -628,7 +628,7 @@ class IntegralGoodsService
         }
         $where = [];
         $where['integral_id'] = $memberIntegralData['id'];
-        if (!empty($type)) {
+        if (is_numeric($type)) {
             $where['type'] = $type;
         }
         return $this->memberIntegralLogModel
