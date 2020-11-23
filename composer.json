@@ -1,0 +1,21 @@
+{
+    "name": "chailiwei/integral",
+    "description": "dev",
+    "type": "library",
+    "require": {
+        "php": "^7.2",
+        "topthink/framework": "5.1.*",
+        "ext-json": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "test",
+            "email": "15536902091@163.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": { "integral\\": "src" }
+    }
+}
