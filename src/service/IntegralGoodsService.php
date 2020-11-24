@@ -376,7 +376,7 @@ class IntegralGoodsService
                 'integral_id' => $memberIntegralData->id,
                 'integral_title' => '兑换商品' . $integralGoodsData['goods_name'],
                 'type' => 0,
-                'integral_number' => '-' . $integralGoodsData['order_integral'],
+                'integral_number' => '-' . $integralGoodsData['integral'],
                 'original_integral' => $currentIntegral,
                 'residue_integral' => $laterIntegral,
                 'create_time' => date('Y-m-d H:i:s'),
