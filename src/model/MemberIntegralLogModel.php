@@ -4,7 +4,11 @@ namespace integral\model;
 
 class MemberIntegralLogModel extends BaseModel
 {
-    protected $table = 'member_integral_log';
+    protected $table = 'library.member_integral_log';
 
-    protected $pk = 'id';
+    public function __construct($data = []) {
+        parent::__construct($data);
+        $env = $_SERVER['ENV'] ?? '';
+        $this->table = $env . $this->table;
+    }
 }

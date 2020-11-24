@@ -348,6 +348,7 @@ class IntegralGoodsService
         $orderData['order_status'] = 1;
         $orderData['order_time'] = date('Y-m-d H:i:s');
         $orderData['order_info'] = json_encode($integralGoodsData, JSON_UNESCAPED_UNICODE);
+        $orderData['order_source'] = $userType;
 
 
         if ($integralGoodsData['goods_type'] == 1) {
