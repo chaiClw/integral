@@ -567,6 +567,11 @@ class IntegralGoodsService
             ];
         }
 
+        $appointmentLimit = $integralGoodsData['integral_goods_offline']['appointment_limit'];
+        if (!empty($appointmentLimit)) {
+            $quan_arr['restrict_date'] = date('Y-m-d', strtotime("+ $appointmentLimit day"));
+        }
+
         $member_has_quan_arr = [
             'memberid' => $memberInfo['idmember'],
             'member_phone' => $memberInfo['member_phone'],
