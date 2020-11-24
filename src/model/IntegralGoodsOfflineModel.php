@@ -20,6 +20,6 @@ class IntegralGoodsOfflineModel extends BaseModel
      */
     public function couponRule()
     {
-        return $this->hasMany(IntegralGoodsOfflineRuleModel::class, 'goods_id', 'id');
+        return $this->hasMany(IntegralGoodsOfflineRuleModel::class, 'goods_offline_id', 'id');
     }
 }
