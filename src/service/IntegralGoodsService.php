@@ -433,7 +433,7 @@ class IntegralGoodsService
             return ['status' => 0, 'msg' => '缺少参数'];
         }
         $preg_phone = '/^1[34578]\d{9}$/ims';
-        if (!preg_match($preg_phone, $param['member_phone'])) {
+        if (!preg_match($preg_phone, $param['address_phone'])) {
             return ['status' => 0, 'msg' => '手机号格式不正确'];
         }
         return ['status' => 200];
