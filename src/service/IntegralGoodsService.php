@@ -365,7 +365,7 @@ class IntegralGoodsService
         Db::startTrans();
         try {
             //1、生成订单
-            $this->integralOrderModel->insertGetId($orderData);
+            $orderId = $this->integralOrderModel->insertGetId($orderData);
             //2、用户积分减少
             $currentIntegral = $memberIntegralData['integral'];
             $laterIntegral = $memberIntegralData['integral'] - $integralGoodsData['integral'];
@@ -394,14 +394,14 @@ class IntegralGoodsService
                 $memberOfflineId = $memberIntegralData->entity_id;
                 if (!empty($memberOfflineId)) {
                     $memberInfo = OfflineMemberModel::where(['idmember' => $memberOfflineId])->find();
-                    $this->syncOfflineCoupon($integralGoodsData, $memberInfo);
+                    $this->syncOfflineCoupon($integralGoodsData, $memberInfo, $orderId);
                 }
             } elseif ($integralGoodsData['goods_type'] == 3) {
                 //在线优惠券同步
                 $memberOnlineId = $memberIntegralData->online_id;
                 if (!empty($memberOnlineId)) {
                     $memberInfo = OnlineMemberModel::where(['idmember' => $memberOnlineId])->find();
-                    $this->syncOnlineCoupon($integralGoodsData, $memberInfo);
+                    $this->syncOnlineCoupon($integralGoodsData, $memberInfo, $orderId);
                 }
             }
 
@@ -420,12 +420,13 @@ class IntegralGoodsService
      * 同步在线优惠券
      * @param $integralGoodsData
      * @param $memberInfo
+     * @param $orderId
      * @throws Exception
      * @throws \think\db\exception\DbException
      * @throws \think\exception\PDOException
      * @author chailiwei
      */
-    public function syncOnlineCoupon($integralGoodsData, $memberInfo)
+    public function syncOnlineCoupon($integralGoodsData, $memberInfo, $orderId)
     {
         $onlineType = $integralGoodsData['integral_goods_online']['online_type'];
 
@@ -462,7 +463,7 @@ class IntegralGoodsService
         $this->rankQuanModel->insert($indate);
         //将兑换订单更改为已同步
         $this->integralOrderModel->where([
-            'id' => $integralGoodsData['id']
+            'id' => $orderId
         ])->update([
             'sync_status' => 1,
             'coupon_sn' => $quan_number
@@ -473,12 +474,13 @@ class IntegralGoodsService
      * 同步到馆优惠券
      * @param $integralGoodsData
      * @param $memberInfo
+     * @param $orderId
      * @throws Exception
      * @throws \think\db\exception\DbException
      * @throws \think\exception\PDOException
      * @author chailiwei
      */
-    public function syncOfflineCoupon($integralGoodsData, $memberInfo)
+    public function syncOfflineCoupon($integralGoodsData, $memberInfo, $orderId)
     {
         $quanModel = new QuanDingdanModel();
         $couponRuleModel = new CouponRuleModel();
@@ -604,7 +606,7 @@ class IntegralGoodsService
         ]);
         //将兑换订单更改为已同步
         $this->integralOrderModel->where([
-            'id' => $integralGoodsData['id']
+            'id' => $orderId
         ])->update([
             'sync_status' => 1,
             'coupon_sn' => $quan_num
