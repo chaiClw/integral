@@ -352,6 +352,11 @@ class IntegralGoodsService
 
 
         if ($integralGoodsData['goods_type'] == 1) {
+            $validateRes = $this->validateAddress($param);
+            if ($validateRes['status'] == 0) {
+                return $validateRes;
+            }
+
             //实物兑换需要收货地址
             $orderData['address_id'] = $param['address_id'] ?? 0;
             $orderData['address_realname'] = $param['address_realname'] ?? '';
@@ -414,6 +419,24 @@ class IntegralGoodsService
             Log::record('兑换商品失败，失败原因：' . $exception->getMessage());
             return ['status' => 0, 'msg' => '兑换失败'];
         }
+    }
+
+    /**
+     * 验证收货地址
+     * @param $param
+     * @return array|int[]
+     * @author chailiwei
+     */
+    public function validateAddress($param)
+    {
+        if (empty($param['address_id']) || empty($param['address_phone'])) {
+            return ['status' => 0, 'msg' => '缺少参数'];
+        }
+        $preg_phone = '/^1[34578]\d{9}$/ims';
+        if (!preg_match($preg_phone, $param['member_phone'])) {
+            return ['status' => 0, 'msg' => '手机号格式不正确'];
+        }
+        return ['status' => 200];
     }
 
 
