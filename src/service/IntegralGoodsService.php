@@ -385,7 +385,7 @@ class IntegralGoodsService
 
             //4、商品兑换量 +1
             $this->integralGoodsModel->where([
-                'id' => $integralGoodsData['goods_id']
+                'id' => $integralGoodsData['id']
             ])->inc('exchange_count');
 
             //同步数据
