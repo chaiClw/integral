@@ -240,7 +240,7 @@ class IntegralGoodsService
                     $query->field('goods_id,price,stock,integral');
                 },
                 'integralGoodsOffline' => function (Query $query) {
-                    $query->field('goods_id,offline_type,lesson,man_lesson,appointment_limit,valid_days,expire_date');
+                    $query->field('id,goods_id,offline_type,lesson,man_lesson,appointment_limit,valid_days,expire_date');
                     $query->with([
                         'couponRule' => function (Query $query1) {
                             $query1->where(['is_del' => 0]);
@@ -408,7 +408,7 @@ class IntegralGoodsService
             // 提交事务
             Db::commit();
             return ['status' => 200, 'msg' => '兑换成功'];
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             Db::rollback();
             Log::record('兑换商品失败，失败原因：' . $exception->getMessage());
             return ['status' => 0, 'msg' => '兑换失败'];
