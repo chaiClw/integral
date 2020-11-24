@@ -409,7 +409,7 @@ class IntegralGoodsService
             // 提交事务
             Db::commit();
             return ['status' => 200, 'msg' => '兑换成功'];
-        } catch (\ErrorException $exception) {
+        } catch (\Exception $exception) {
             Db::rollback();
             Log::record('兑换商品失败，失败原因：' . $exception->getMessage());
             return ['status' => 0, 'msg' => '兑换失败'];
