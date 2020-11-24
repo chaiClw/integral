@@ -369,6 +369,7 @@ class IntegralGoodsService
             //2、用户积分减少
             $currentIntegral = $memberIntegralData['integral'];
             $laterIntegral = $memberIntegralData['integral'] - $integralGoodsData['integral'];
+            $memberIntegralData->integral = $laterIntegral;
             $memberIntegralData->save();
 
             //3、记录用户返还积分记录
@@ -408,7 +409,7 @@ class IntegralGoodsService
             // 提交事务
             Db::commit();
             return ['status' => 200, 'msg' => '兑换成功'];
-        } catch (\Exception $exception) {
+        } catch (\ErrorException $exception) {
             Db::rollback();
             Log::record('兑换商品失败，失败原因：' . $exception->getMessage());
             return ['status' => 0, 'msg' => '兑换失败'];
