@@ -130,7 +130,7 @@ class IntegralGoodsService
             'sku_data' => $skuData,
             'offline_data' => $offlineData,
             'online_data' => $onlineData,
-            'member' => ['member_integral' => $memberIntegral]
+            'member' => ['member_integral' => is_null($memberIntegral) ? 0 : $memberIntegral]
         ];
     }
 
