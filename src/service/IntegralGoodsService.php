@@ -607,7 +607,7 @@ class IntegralGoodsService
                 'start_date' => date('Y-m-d'),
                 'end_date' => date('Y-m-d', strtotime("+ $validDays day")),
                 'create_time' => date('Y-m-d H:i:s'),
-                'price' => $integralGoodsData['integral_goods_offline']['price'],
+                'price' => $integralGoodsData['integral_goods_offline']['coupon_price'],
                 'shopid' => implode(array_column($ruleData, 'shopid'), ','),
             ];
         }
