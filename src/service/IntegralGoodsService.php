@@ -49,14 +49,27 @@ class IntegralGoodsService
 
     /**
      * 积分兑换 --- 首页
+     * @param $userType (1-借阅 2-到馆)
+     * @param $memberInfo
      * @return array
      * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @author chailiwei
      */
-    public function home()
+    public function home($userType, $memberInfo)
     {
+        if ($userType == 1) {
+            $memberIntegral = $this->memberIntegralModel->where([
+                'online_id' => $memberInfo['idmember']
+            ])->value('integral');
+        } else {
+            $memberIntegral = $this->memberIntegralModel->where([
+                'entity_id' => $memberInfo['idmember']
+            ])->value('integral');
+        }
+
         $where = [
             'goods_status' => 1,
             'is_del' => 0
@@ -113,7 +126,12 @@ class IntegralGoodsService
             }
         }
 
-        return ['sku_data' => $skuData, 'offline_data' => $offlineData, 'online_data' => $onlineData];
+        return [
+            'sku_data' => $skuData,
+            'offline_data' => $offlineData,
+            'online_data' => $onlineData,
+            'member' => ['member_integral' => $memberIntegral]
+        ];
     }
 
     /**
