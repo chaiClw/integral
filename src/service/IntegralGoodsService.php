@@ -212,7 +212,7 @@ class IntegralGoodsService
                         $query->field('goods_id,offline_type,lesson,man_lesson,appointment_limit,valid_days,expire_date');
                     }
                 ])
-                    ->where(['goods_type' => 2])
+                    ->where(['goods_type' => 3])
                     ->where($where)
                     ->field('id,goods_type,goods_name,category_id,goods_img,goods_head_img,price,stock,integral,goods_title,goods_sub_title,goods_desc')
                     ->order($order)
