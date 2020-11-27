@@ -8,6 +8,8 @@ use integral\model\CouponRuleModel;
 use integral\model\IntegralCategoryModel;
 use integral\model\IntegralGoodsModel;
 use integral\model\IntegralOrderModel;
+use integral\model\MemberAddressOffline;
+use integral\model\MemberAddressOnline;
 use integral\model\MemberHasQuan;
 use integral\model\MemberIntegralLogModel;
 use integral\model\MemberIntegralModel;
@@ -374,15 +376,23 @@ class IntegralGoodsService
             if ($validateRes['status'] == 0) {
                 return $validateRes;
             }
+            if ($userType == 1){
+                $memberAddress = MemberAddressOnline::where(['memberid'=>$memberInfo['idmember']])->find();
+            } else{
+                $memberAddress = MemberAddressOffline::where(['memberid'=>$memberInfo['idmember']])->find();
+            }
+            if (empty($memberAddress)) {
+                return ['status' => 0, 'msg' => '未查到收货地址'];
+            }
 
             //实物兑换需要收货地址
             $orderData['address_id'] = $param['address_id'] ?? 0;
-            $orderData['address_realname'] = $param['address_realname'] ?? '';
-            $orderData['address_phone'] = $param['address_phone'] ?? '';
-            $orderData['address_province'] = $param['address_province'] ?? '';
-            $orderData['address_city'] = $param['address_city'] ?? '';
-            $orderData['address_area'] = $param['address_area'] ?? '';
-            $orderData['address_detail'] = $param['address_detail'] ?? '';
+            $orderData['address_realname'] = $memberAddress['address_realname'] ?? '';
+            $orderData['address_phone'] = $memberAddress['address_phone'] ?? '';
+            $orderData['address_province'] = $memberAddress['address_province'] ?? '';
+            $orderData['address_city'] = $memberAddress['address_city'] ?? '';
+            $orderData['address_area'] = $memberAddress['address_area'] ?? '';
+            $orderData['address_detail'] = $memberAddress['address_detail'] ?? '';
         }
 
         Db::startTrans();
@@ -447,13 +457,13 @@ class IntegralGoodsService
      */
     public function validateAddress($param)
     {
-        if (empty($param['address_id']) || empty($param['address_phone'])) {
+        if (empty($param['address_id'])) {
             return ['status' => 0, 'msg' => '缺少参数'];
         }
-        $preg_phone = '/^1[34578]\d{9}$/ims';
-        if (!preg_match($preg_phone, $param['address_phone'])) {
-            return ['status' => 0, 'msg' => '手机号格式不正确'];
-        }
+//        $preg_phone = '/^1[34578]\d{9}$/ims';
+//        if (!preg_match($preg_phone, $param['address_phone'])) {
+//            return ['status' => 0, 'msg' => '手机号格式不正确'];
+//        }
         return ['status' => 200];
     }
 
