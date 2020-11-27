@@ -693,7 +693,9 @@ class IntegralGoodsService
         }
         return $this->memberIntegralLogModel
             ->where($where)
-            ->paginate($page_size, false);
+            ->order('id desc')
+            ->select();
+//            ->paginate($page_size, false);
     }
 
 
