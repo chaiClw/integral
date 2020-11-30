@@ -501,7 +501,7 @@ class IntegralGoodsService
         $indate['quan_status'] = 3;
         $indate['lingqu_time'] = date('Y-m-d H:i:s');
         $indate['start_date'] = date('Y-m-d');
-        $indate['end_date'] = strtotime("+ $validDays day");
+        $indate['end_date'] = date('Y-m-d', strtotime("+ $validDays day"));
         $indate['create_time'] = date('Y-m-d H:i:s');
         $indate['memberid'] = $memberInfo['idmember'];
         $indate['member_phone'] = $memberInfo['member_phone'];
