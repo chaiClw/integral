@@ -31,12 +31,7 @@ class IntegralGoodsService
     public $memberIntegralLogModel;
     public $integralCategoryModel;
     public $rankQuanModel;
-
-    public $goodsType = [
-        1 => '实物商品兑换',
-        2 => '到馆优惠券兑换',
-        3 => '在线优惠券兑换'
-    ];
+    
 
     public function __construct(
         IntegralGoodsModel $integralGoodsModel,
@@ -414,7 +409,7 @@ class IntegralGoodsService
             //3、记录用户返还积分记录
             $logData = [
                 'integral_id' => $memberIntegralData->id,
-                'integral_title' => $this->goodsType[$integralGoodsData['goods_type']] ?? '商品兑换',
+                'integral_title' => $integralGoodsData['goods_name'],
                 'type' => 0,
                 'integral_number' => '-' . $integralGoodsData['integral'],
                 'original_integral' => $currentIntegral,
