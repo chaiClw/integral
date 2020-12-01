@@ -261,7 +261,7 @@ class IntegralGoodsService
                     $query->field('goods_id,price,stock,integral');
                 },
                 'integralGoodsOffline' => function (Query $query) {
-                    $query->field('id,goods_id,offline_type,lesson,man_lesson,appointment_limit,valid_days,expire_date');
+                    $query->field('id,goods_id,offline_type,lesson,man_lesson,appointment_limit,valid_days,expire_date,coupon_price');
                     $query->with([
                         'couponRule' => function (Query $query1) {
                             $query1->where(['is_del' => 0]);
