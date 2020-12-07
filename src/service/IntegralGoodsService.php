@@ -25,7 +25,7 @@ use think\facade\Log;
 
 class IntegralGoodsService
 {
-    public $integralGoodsModel;
+    public $integralGoodsModel; 
     public $integralOrderModel;
     public $memberIntegralModel;
     public $memberIntegralLogModel;
