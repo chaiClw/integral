@@ -42,6 +42,7 @@ class IntegralService
                 'integral_title'=>$set['title'],
                 'integral_number'=>$set['integral'],
                 'original_integral'=>$integral,
+                'source_id'=>$set['id'],
                 'residue_integral'=>$memberIntegral['integral'],
                 'create_time'=>date('Y-m-d H:i:s')
             ]);
