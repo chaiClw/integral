@@ -16,7 +16,7 @@ class IntegralService
      * @userid  用户ID
      * @type  用户类型  1在线借阅  2到馆
      */
-    public  function  operationIntegral($id=0 , $userid=0 , $type=1){
+    public  function  operationIntegral($id=0 , $userid=0 , $type=1,$num=0){
         if($id<=0 || $userid<=0){
             return ['code'=>0,'msg'=>'数据不完整'];
         }
@@ -32,6 +32,10 @@ class IntegralService
         $set=$IntegralSetModel->where(['id'=>$id,'status'=>0])->find();
         if(empty($set))   return ['code'=>0,'msg'=>'规则不存在或被禁用'];
         $integral=$MemberIntegralModel->where($where)->value('integral');
+        //倍数换算积分
+        if($set['way_type']==1){
+            $set['integral'] = $num * $set['integral'];
+        }
         Db::startTrans();
         try {
             $MemberIntegralModel->where($where)->setInc('integral',$set['integral']);
