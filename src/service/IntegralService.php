@@ -29,8 +29,8 @@ class IntegralService
         $IntegralSetModel = new IntegralSetModel();
         $MemberIntegralModel = new MemberIntegralModel();
         $MemberIntegralLogModel = new MemberIntegralLogModel();
-        $set=$IntegralSetModel->where(['id'=>$id])->find();
-        if(empty($set))   return ['code'=>0,'msg'=>'奖励规则查询错误'];
+        $set=$IntegralSetModel->where(['id'=>$id,'status'=>0])->find();
+        if(empty($set))   return ['code'=>0,'msg'=>'规则不存在或被禁用'];
         $integral=$MemberIntegralModel->where($where)->value('integral');
         Db::startTrans();
         try {
