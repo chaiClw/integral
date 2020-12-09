@@ -47,7 +47,7 @@ class IntegralService
                 'create_time'=>date('Y-m-d H:i:s')
             ]);
             Db::commit();
-            return ['code'=>200,'msg'=>'成功'];
+            return ['code'=>200,'msg'=>'成功','data'=>$set['integral']];
         } catch (Exception $exception) {
             Db::rollback();
             return ['code'=>0,'msg'=>'失败'];
