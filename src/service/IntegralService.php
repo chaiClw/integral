@@ -43,7 +43,7 @@ class IntegralService
             $memberIntegral=$MemberIntegralModel->where($where)->find();
             $MemberIntegralLogModel->insert([
                 'integral_id'=>$memberIntegral['id'],
-                'integral_title'=>$set['title'],
+                'integral_title'=>$set['name'],
                 'integral_number'=>$set['integral'],
                 'original_integral'=>$integral,
                 'source_id'=>$set['id'],
