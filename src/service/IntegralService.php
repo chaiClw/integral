@@ -14,6 +14,7 @@ class IntegralService
      * @return array
      * @id  积分动作ID
      * @userid  用户ID
+     * @num  倍数
      * @type  用户类型  1在线借阅  2到馆
      */
     public  function  operationIntegral($id=0 , $userid=0 , $type=1,$num=0){
