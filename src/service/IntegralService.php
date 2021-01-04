@@ -16,8 +16,10 @@ class IntegralService
      * @userid  用户ID
      * @num  倍数
      * @type  用户类型  1在线借阅  2到馆
+     * @multiple  积分翻倍（几倍） 默认1倍
      */
-    public  function  operationIntegral($id=0 , $userid=0 , $type=1,$num=0){
+    public function operationIntegral($id = 0, $userid = 0, $type = 1, $num = 0, $multiple = 1)
+    {
         if($id<=0 || $userid<=0){
             return ['code'=>0,'msg'=>'数据不完整'];
         }
@@ -37,6 +39,7 @@ class IntegralService
         if($set['way_type']==1){
             $set['integral'] = $num * $set['integral'];
         }
+        $set['integral'] = $set['integral'] * $multiple;
         Db::startTrans();
         try {
             $MemberIntegralModel->where($where)->setInc('integral',$set['integral']);
