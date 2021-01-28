@@ -2,6 +2,7 @@
 
 
 namespace integral\service;
+use integral\model\DataMemberModel;
 use integral\model\IntegralSetModel;
 use integral\model\MemberIntegralLogModel;
 use integral\model\MemberIntegralModel;
@@ -45,6 +46,10 @@ class IntegralService
             $MemberIntegralModel->where($where)->setInc('integral',$set['integral']);
             $MemberIntegralModel->where($where)->setInc('integral_all',$set['integral']);
             $memberIntegral=$MemberIntegralModel->where($where)->find();
+            if (empty($memberIntegral) && $type == 1){
+                $this->syncIntegralOrder($userid);  //同步积分用户信息
+                $memberIntegral = $MemberIntegralModel->where($where)->find();
+            }
             $MemberIntegralLogModel->insert([
                 'integral_id'=>$memberIntegral['id'],
                 'integral_title'=>$set['name'],
@@ -56,9 +61,44 @@ class IntegralService
             ]);
             Db::commit();
             return ['code'=>200,'msg'=>'成功','data'=>$set['integral']];
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             Db::rollback();
             return ['code'=>0,'msg'=>'失败'];
+        }
+    }
+
+    /**
+     * @param $idmember
+     * @return bool
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author chailiwei
+     */
+    public function syncIntegralOrder($idmember)
+    {
+        $offlineId = DataMemberModel::where(['jieyue_memberid'=>$idmember])->value('yueke_memberid');
+
+        if(empty($offlineId)){  //如果到馆是0，证明是纯新用户
+            $insertMemberIntegralData = [
+                'online_id'=>$idmember,
+                'create_time'=>date('Y-m-d H:i:s',time()),
+                'update_time'=>date('Y-m-d H:i:s',time())
+            ];
+            MemberIntegralModel::insertGetId($insertMemberIntegralData);
+        } else {
+            $memberIntegral = MemberIntegralModel::where(['entity_id'=>$offlineId])->find();
+            if(empty($memberIntegral)){
+                $insertMemberIntegralData = [
+                    'online_id'=>$idmember,
+                    'entity_id'=>$offlineId,
+                    'create_time'=>date('Y-m-d H:i:s',time()),
+                    'update_time'=>date('Y-m-d H:i:s',time())
+                ];
+                MemberIntegralModel::insertGetId($insertMemberIntegralData);
+                return true;
+            }
         }
     }
 }
