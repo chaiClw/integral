@@ -45,14 +45,14 @@ class IntegralService
         $set['integral'] = $set['integral'] * $multiple;
         Db::startTrans();
         try {
-            $MemberIntegralModel->where($where)->setInc('integral', $set['integral']);
-            $MemberIntegralModel->where($where)->setInc('integral_all', $set['integral']);
             $memberIntegral = $MemberIntegralModel->where($where)->find();
             if (empty($memberIntegral) && $type == 1) {
                 $insertData = $this->syncIntegralOrder($userid);  //同步积分用户信息
                 MemberIntegralModel::create($insertData);
                 $memberIntegral = $MemberIntegralModel->where($where)->find();
             }
+            $MemberIntegralModel->where($where)->setInc('integral', $set['integral']);
+            $MemberIntegralModel->where($where)->setInc('integral_all', $set['integral']);
             $MemberIntegralLogModel->insert([
                 'integral_id' => $memberIntegral['id'],
                 'integral_title' => $set['name'],
