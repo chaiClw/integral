@@ -50,9 +50,11 @@ class IntegralService
                 $insertData = $this->syncIntegralOrder($userid);  //同步积分用户信息
                 MemberIntegralModel::create($insertData);
                 $memberIntegral = $MemberIntegralModel->where($where)->find();
+                $integral = 0;
             }
             $MemberIntegralModel->where($where)->setInc('integral', $set['integral']);
             $MemberIntegralModel->where($where)->setInc('integral_all', $set['integral']);
+            $memberIntegral['integral'] += $set['integral'];
             $MemberIntegralLogModel->insert([
                 'integral_id' => $memberIntegral['id'],
                 'integral_title' => $set['name'],
